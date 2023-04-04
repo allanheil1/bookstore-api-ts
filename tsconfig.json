@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
         "outDir": "dist",
+        "moduleResolution": "node",
         "esModuleInterop": true,
         "module": "ES6",
         "baseUrl": ".",
