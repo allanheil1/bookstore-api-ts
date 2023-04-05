@@ -1,8 +1,8 @@
 import connectionDb from "../config/database.js";
 import { QueryResult } from 'pg';
-import * as t from "../types/users.js"
+import * as t from "../protocols/types.js"
 
-async function findByEmail(email): Promise<QueryResult<t.UserRaw>> {
+async function findByEmail(email: string): Promise<QueryResult<t.UserRaw>> {
   return await connectionDb.query(
     `    
     SELECT * FROM users WHERE email=$1
@@ -11,18 +11,18 @@ async function findByEmail(email): Promise<QueryResult<t.UserRaw>> {
   );
 }
 
-async function create({ name, email, password }) {
-  await connectionDb.query(
+async function create(newUser: t.UserRaw): Promise<QueryResult>  {
+  return await connectionDb.query(
     `
         INSERT INTO users (name, email, password)
         VALUES ($1, $2, $3)
     `,
-    [name, email, password]
+    [newUser.name, newUser.email, newUser.password]
   );
 }
 
-async function createSession({ token, userId }) {
-  await connectionDb.query(
+async function createSession({ token, userId }): Promise<QueryResult>  {
+  return await connectionDb.query(
     `
         INSERT INTO sessions (token, "userId")
         VALUES ($1, $2)
@@ -31,7 +31,7 @@ async function createSession({ token, userId }) {
   );
 }
 
-async function findSessionByToken(token) {
+async function findSessionByToken(token: string): Promise<QueryResult<t.FindSession>> {
   return await connectionDb.query(
     `
         SELECT * FROM sessions WHERE token = $1
@@ -40,7 +40,7 @@ async function findSessionByToken(token) {
   );
 }
 
-async function findById(id): Promise<QueryResult<t.UserRaw>> {
+async function findById(id: number): Promise<QueryResult<t.UserRaw>> {
   return await connectionDb.query(
     `    
     SELECT * FROM users WHERE id=$1

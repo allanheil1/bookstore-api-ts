@@ -1,20 +1,21 @@
 import userServices from "../services/userServices.js";
 import { Request, Response, NextFunction } from 'express';
+import * as t from "../protocols/types.js";
 
 async function create(req: Request, res: Response, next: NextFunction) {
-  const { name, email, password } = req.body;
+  const newUser = req.body as t.UserRaw;
   try {
-    await userServices.create({ name, email, password });
-    return res.sendStatus(201);
+    const userCreated = await userServices.create(newUser);
+    return res.send(`Usuários criados: ${userCreated.rowCount}`).status(201);
   } catch (err) {
     next(err);
   }
 }
 
 async function signin(req: Request, res: Response, next: NextFunction) {
-  const { email, password } = req.body;
+  const loginUser = req.body as t.UserRaw;
   try {
-    const token = await userServices.signin({ email, password });
+    const token = await userServices.signin(loginUser);
     return res.send({ token });
   } catch (err) {
     next(err);

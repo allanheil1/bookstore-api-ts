@@ -1,6 +1,6 @@
 import connectionDb from "../config/database.js";
-import { QueryResult } from 'pg';
-import * as t from "../types/books.js";
+import { Query, QueryResult } from 'pg';
+import * as t from "../protocols/types.js";
 
 async function create( newBook: t.BookRaw ): Promise<QueryResult> {
   return await connectionDb.query(
@@ -21,7 +21,7 @@ async function findByName(name: string): Promise<QueryResult<t.BookRaw>> {
   );
 }
 
-async function findAll() {
+async function findAll(): Promise<QueryResult<t.findAllBooks>>  {
   return await connectionDb.query(
     `
         SELECT 
@@ -44,8 +44,8 @@ async function findById(id: number): Promise<QueryResult<t.BookRaw>> {
   );
 }
 
-async function updateStatusBook(status: boolean, bookId: number) {
-  await connectionDb.query(
+async function updateStatusBook(status: boolean, bookId: number): Promise<QueryResult> {
+  return await connectionDb.query(
     `
       UPDATE books
       SET available = $1
@@ -55,8 +55,8 @@ async function updateStatusBook(status: boolean, bookId: number) {
   );
 }
 
-async function takeBook(userId: number, bookId: number) {
-  await connectionDb.query(
+async function takeBook(userId: number, bookId: number): Promise<QueryResult> {
+  return await connectionDb.query(
     `
       INSERT INTO "myBooks" ("userId", "bookId")
       VALUES ($1, $2);
@@ -65,7 +65,7 @@ async function takeBook(userId: number, bookId: number) {
   );
 }
 
-async function findAllMyBooks(userId) {
+async function findAllMyBooks(userId: number): Promise<QueryResult<t.MyBooks>> {
   return await connectionDb.query(
     `
     SELECT 
