@@ -24,12 +24,13 @@ async function findAll(req: Request, res: Response, next: NextFunction) {
 }
 
 async function takeBook(req: Request, res: Response, next: NextFunction) {
-  const id = res.locals.user as number;
+  const userId = res.locals.user.id as number;
   const bookId = +req.params.id as number;
   try {
-    await bookServices.takeBook(id, bookId);
-    return res.sendStatus(201);
+    const bookTaken = await bookServices.takeBook(userId, bookId);
+    return res.send(`Livros alugados: ${bookTaken.rowCount}`).status(201);
   } catch (err) {
+    console.log(err)
     next(err);
   }
 }
