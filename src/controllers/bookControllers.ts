@@ -36,9 +36,9 @@ async function takeBook(req: Request, res: Response, next: NextFunction) {
 }
 
 async function findAllMyBooks(req: Request, res: Response, next: NextFunction) {
-  const id  = res.locals.user as number;
+  const userId  = res.locals.user.id as number;
   try {
-    const books = await bookServices.findAllMyBooks(id);
+    const books = await bookServices.findAllMyBooks(userId);
     return res.send(books);
   } catch (err) {
     next(err);
