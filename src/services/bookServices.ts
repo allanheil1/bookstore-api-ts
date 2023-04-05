@@ -1,13 +1,17 @@
 import errors from "../errors/index.js";
 import bookRepositories from "../repositories/bookRepositories.js";
+import * as t from "../types/books.js";
 
-async function create({ name, author, userId }) {
+async function create(newBook: t.BookRaw) {
   const {
     rows: [book],
-  } = await bookRepositories.findByName(name);
+  } = await bookRepositories.findByName(newBook.name);
   if (book) throw errors.conflictError("Book already exists");
+  
+  const bookCreated = await bookRepositories.create(newBook);
 
-  await bookRepositories.create({ name, author, userId });
+  return bookCreated;
+
 }
 
 async function findAll() {

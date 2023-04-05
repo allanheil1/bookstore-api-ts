@@ -1,7 +1,8 @@
+import { Request, Response, NextFunction } from 'express';
 import errors from "../errors/index.js";
 import userRepositories from "../repositories/userRepositories.js";
 
-async function authValidation(req, res, next) {
+async function authValidation(req: Request, res: Response, next: NextFunction) {
   const { authorization } = req.headers;
   const token = authorization?.replace("Bearer ", "");
 
@@ -21,6 +22,7 @@ async function authValidation(req, res, next) {
     res.locals.user = user;
     next();
   } catch (err) {
+
     next(err);
   }
 }

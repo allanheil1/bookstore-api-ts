@@ -1,16 +1,18 @@
 import connectionDb from "../config/database.js";
+import { QueryResult } from 'pg';
+import * as t from "../types/books.js";
 
-async function create({ name, author, userId }) {
-  await connectionDb.query(
+async function create( newBook: t.BookRaw ): Promise<QueryResult> {
+  return await connectionDb.query(
     `
         INSERT INTO books (name, author, "userId")
         VALUES ($1, $2, $3)
         `,
-    [name, author, userId]
+    [newBook.name, newBook.author, newBook.userId]
   );
 }
 
-async function findByName(name) {
+async function findByName(name: string): Promise<QueryResult<t.BookRaw>> {
   return await connectionDb.query(
     `
         SELECT * FROM books WHERE name = $1;
@@ -32,7 +34,7 @@ async function findAll() {
   );
 }
 
-async function findById(id) {
+async function findById(id: number): Promise<QueryResult<t.BookRaw>> {
   return await connectionDb.query(
     `
           SELECT * FROM books 
@@ -42,7 +44,7 @@ async function findById(id) {
   );
 }
 
-async function updateStatusBook(status, bookId) {
+async function updateStatusBook(status: boolean, bookId: number) {
   await connectionDb.query(
     `
       UPDATE books
@@ -53,7 +55,7 @@ async function updateStatusBook(status, bookId) {
   );
 }
 
-async function takeBook(userId, bookId) {
+async function takeBook(userId: number, bookId: number) {
   await connectionDb.query(
     `
       INSERT INTO "myBooks" ("userId", "bookId")

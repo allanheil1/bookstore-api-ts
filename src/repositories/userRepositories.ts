@@ -1,6 +1,8 @@
 import connectionDb from "../config/database.js";
+import { QueryResult } from 'pg';
+import * as t from "../types/users.js"
 
-async function findByEmail(email) {
+async function findByEmail(email): Promise<QueryResult<t.UserRaw>> {
   return await connectionDb.query(
     `    
     SELECT * FROM users WHERE email=$1
@@ -38,7 +40,7 @@ async function findSessionByToken(token) {
   );
 }
 
-async function findById(id) {
+async function findById(id): Promise<QueryResult<t.UserRaw>> {
   return await connectionDb.query(
     `    
     SELECT * FROM users WHERE id=$1
