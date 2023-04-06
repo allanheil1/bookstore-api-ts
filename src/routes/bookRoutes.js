@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var express_1 = require("express");
+var bookControllers_js_1 = require("../controllers/bookControllers.js");
+var authMiddleware_js_1 = require("../middlewares/authMiddleware.js");
+var schemaValidationMiddleware_js_1 = require("../middlewares/schemaValidationMiddleware.js");
+var Book_js_1 = require("../schemas/Book.js");
+var bookRoutes = (0, express_1.Router)();
+bookRoutes.post("/", authMiddleware_js_1.default.authValidation, (0, schemaValidationMiddleware_js_1.validateSchema)(Book_js_1.bookSchemma), bookControllers_js_1.default.create);
+bookRoutes.get("/", authMiddleware_js_1.default.authValidation, bookControllers_js_1.default.findAll);
+bookRoutes.post("/take-book/:id", authMiddleware_js_1.default.authValidation, bookControllers_js_1.default.takeBook);
+bookRoutes.get("/my-books", authMiddleware_js_1.default.authValidation, bookControllers_js_1.default.findAllMyBooks);
+exports.default = bookRoutes;

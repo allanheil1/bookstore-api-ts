@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/server.ts"
+    "dev": "nodemon src/server.ts",
+    "dev2": "tsx src/server.ts",
+    "build": "tsc src/server.ts"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +23,7 @@
     "dotenv": "^16.0.3",
     "nodemon": "^2.0.22",
     "ts-node": "^10.9.1",
+    "tsx": "^3.12.6",
     "typescript": "^5.0.3"
   },
   "dependencies": {
